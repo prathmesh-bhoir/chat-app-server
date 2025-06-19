@@ -8,6 +8,7 @@ import authRoutes from "./routes/AuthRoutes.js"
 dotenv.config();
 
 const app = express();
+
 const port = process.env.PORT || 3001;
 const baseURL = process.env.BASEURL;
 
@@ -16,6 +17,8 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
 }));
+
+app.use("/upload/profiles", express.static("upload/profiles"));
 
 app.use(cookieParser());
 app.use(express.json());
@@ -27,3 +30,13 @@ const server = app.listen(port, ()=>{
 });
 
 mongoose.connect(baseURL).then(()=> console.log("DB connection successful")).catch((err)=>console.log(err.message));
+
+// gracefull shutdown for nodemon restarts
+// process.once('SIGINT', () => {
+//     server.close(()=>{
+//         mongoose.connection.close(false, ()=>{
+//             console.log('MongoDb connection close on app restart');
+//             process.kill(process.pid, 'SIGINT');
+//         })
+//     })
+// })
