@@ -1,4 +1,3 @@
-import { disconnect } from "mongoose";
 import { Server as SocketIOServer } from "socket.io";
 import Message from "./models/MessagesModel.js";
 
@@ -34,10 +33,10 @@ const setupSocket = (server) => {
         .populate("reciever","id email firstName lastName image color");
 
         if(recieverSocketId){
-            io.to(recieverSocketId).emit("recievedMessage", messageData);
+            io.to(recieverSocketId).emit("recieveMessage", messageData);
         }
         if(senderSocketId){
-            io.to(senderSocketId).emit("sentMessage", messageData);
+            io.to(senderSocketId).emit("recieveMessage", messageData);
         }
     };
 
